@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div ng-app="myApp" ng-controller="appCtrl">
+            <div class="form-group">
+                <label for="number">Number:</label>
+                <input type="text" ng-model="number" class="form-control" id="number">
+            </div>
+            <button type="button" class="btn btn-primary" ng-click="getData()">Submit</button>
+            <hr/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Word</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in names.slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))">
+                        <td>{{ x.id }}</td>
+                        <td>{{ x.weight }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"  max-size="maxSize"  class="pagination-sm" items-per-page="itemsPerPage"></pagination>
+        </div>
+    </div>
+    <script>
+    var app = angular.module('myApp', ['ui.bootstrap']);
+    app.controller('appCtrl', function($scope, $http) {
+
+        $scope.viewby = 10;
+        $scope.currentPage = 1;
+        $scope.itemsPerPage = 10;
+        $scope.maxSize = 10;
+
+        $scope.setPage = function(pageNo) {
+            $scope.currentPage = pageNo;
+        };
+
+        $scope.pageChanged = function() {
+            console.log('Page changed to: ' + $scope.currentPage);
+        };
+
+        $scope.setItemsPerPage = function(num) {
+            $scope.itemsPerPage = num;
+            $scope.currentPage = 1; //reset to first page
+        }
+
+        $scope.getData = function() {
+            $http.get("/words/" + $scope.number)
+                .then(function(response) {
+                    $scope.names = response.data;
+                    $scope.totalItems = response.data.length;
+                });
+        }
+
+
+    });
+    </script>
+</body>
+
+</html>
