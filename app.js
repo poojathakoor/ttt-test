@@ -18,8 +18,12 @@ app.get('/', function(req, res) {
     res.render('index.html');
 });
 
+/*
+Lists top N frequent words
+Creates a map to store count of each word
+uses Min Heap to fetch only top N frequent words
+*/
 app.get('/words/:count', function(req, res) {
-    console.log(req.params['count']);
     var n = parseInt(req.params['count']);
     request.get('http://terriblytinytales.com/test.txt', function(error, response, body) {
         if (!error && response.statusCode == 200) {
@@ -32,7 +36,7 @@ app.get('/words/:count', function(req, res) {
                 return memo;
             }, {});
 
-            var j = 0
+            var j = 0;
             for (var word in wordCountsMap) {
                 if (j < n)
                     heap.insert({ weight: wordCountsMap[word], id: word });
@@ -40,8 +44,9 @@ app.get('/words/:count', function(req, res) {
                     heap.replaceHead({ weight: wordCountsMap[word], id: word });
                 j++;
             }
-            
-            res.send(heap.getHeap())
+            res.send(heap.getHeap());
+        }else{
+            res.status(500).send("Something went wrong!");
         }
     });
 });
