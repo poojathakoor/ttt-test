@@ -3,7 +3,7 @@ Terribly Tiny Tales Test Website
 
 # Description
 A Node.js app using [Express](http://expressjs.com/).
-The application fetches top N frequent words from a text file.
+The application fetches top N frequent words from a text [file](http://terriblytinytales.com/test.txt).
 
 The running demo of the web application is available on this link [https://ttt-test-webapp.herokuapp.com/](https://ttt-test-webapp.herokuapp.com/).
 
