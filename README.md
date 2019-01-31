@@ -9,7 +9,7 @@ The running demo of the web application is available on this link [https://ttt-t
 
 ## Running Locally
 ```sh
-git clone https://github.com/pooja-thakoor/ttt-test.git
+git clone https://github.com/poojathakoor/ttt-test.git
 cd ttt-test
 npm install
 npm start
